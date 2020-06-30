@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Analyse your motion-centric data set!</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" />
+    <link href="/index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>Analyse your motion-centric data set!</h1>
+    <p>
+      Do you have a data set which describes a very large number of movements between a small number of points?
+      Perhaps you have a list of millions of flights or a collection of all train rides made in a city's metro system.
+      Our system lets you visualise the movement from this dataset easily.
+      Just upload your data set here or select from the list of existing data sets if you've already added your own.
+    </p>
+    <div>
+      <select id="projects"></select>
+      <button id="go">Go!</button>
+    </div>
+    <div>
+      <h2>Start new project</h2>
+      <p>Want to upload a new dataset? Do so here. The dataset must be two bzip2 archives containing the two CSV files.
+         One of them the movements file and have the columns</p>
+      <table>
+        <tr><td>from</td><td>to</tr><td>A1</td><td>A2</td><td>A3</td><td>...</td></tr>
+      </table>
+      <p>
+        where A1, A2, A3, ... are the names of columns describing the movements.
+        The order of the columns does not matter.
+        The other CSV file must be the vertices file and have the columns
+      </p>
+      <table>
+        <tr><td>Vertex</td><td>Latitude</tr><td>Longitude</td></tr>
+      </table>
+      <p>
+        The `Vertex` column lists the vertices' unique identifiers exactly as they would appear in the other file's `from` or `to` columns.
+        The `Latitude` and `Longitude` columns must be numbers describing their locations (e.g. -70.4616 is OK and 70.4616 West is not allowed).
+        Again, the order of the columns does not matter.
+      </p>
+      <form action="/dataset" method="POST" enctype="multipart/form-data">
+        <label for="movements">Movements file</label>
+        <input type="file" name="movements" />
+        <label for="vertices">Vertices file</label>
+        <input type="file" name="vertices" />
+        <label for="project">Name of the project (e.g. 'bikes' or 'flights') (please make it lowercase)</label>
+        <input type="text" name="project" />
+        <input type="submit" />
+      </form>
+    </div>
+    <script>
+      const main = async () => {
+        const projectSelector = document.getElementById('projects')
+        document.getElementById('go').onclick = () => window.location = `/visualise.html?project=${projectSelector.value}`;
+        const projects = (await (await fetch('/project')).text()).split(',');
+        for (let project of projects) {
+          projectSelector.innerHTML += `<option value="${project}">${project}</option>`
+        }
+      }
+
+      main();
+    </script>
+  </body>
+</html>

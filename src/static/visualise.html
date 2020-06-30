@@ -1,0 +1,105 @@
+<!DOCTYPE html5>
+
+<html>
+  <head>
+    <title>Making Citi Bike Better With Data</title>
+    <meta charset="utf-8" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" rel="stylesheet" />
+    <style>
+      .container {
+          margin: 0px;
+          max-width: 100%;
+          width: 100%;
+      }
+
+      #sql div {
+          height: 50vh;
+          overflow-y: auto;
+      }
+
+      #sql-preview {
+          overflow-x: scroll;
+      }
+
+      #navbar {
+        width: 100%;
+        background-color: #DEDEDE;
+        text-align: center;
+        position: fixed;
+        z-index: 999;
+      }
+
+      .left-hand-view {
+        float: left;
+        width: 50%;
+      }
+
+      #right-hand-view {
+        position: fixed;
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+      <a href="#section:plots">PLOTS</a>
+      <a href="#section:filter">FILTERS</a>
+      <a href="#section:events">ADD EVENTS</a>
+      <a href="#section:sql">SQL</a>
+    </div>
+    <br />
+    <div class="container">
+      <h1>Analysing <span id="project-name"></span></h1>
+      <div class="row">
+        <h2 id="section:plots">Plots</h2>
+      </div>
+      <div class="row">
+        <div class="six columns">
+          <div id="map"></div>
+          <button id="focus-map">Focus</button>
+          <label for="map_hover">Select station when I hover over it</label>
+          <input type="checkbox" id="map_hover" checked />
+        </div>
+        <div id="stations" class="six columns"></div>
+      </div>
+      <div id="end-of-plots"></div>
+      <div class="row">
+        <div class="twelve columns">
+          <h2 id="section:filter">Filter by dataset columns</h2>
+        </div>
+      </div>
+      <div class="row" id="filters">
+      </div>
+      <div>
+        <h2 id="section:events">Add points to the main map</h2>
+        <p>Want to upload more points (e.g. hospital locations) to add to the map? Add them here using a CSV with a latitude, longtitude, text, and value column.</p>
+        <form id="events-form">
+          <input type="file" id="events-file" />
+          <label for="events-color">What colorscale should the points on the map use?</label>
+          <input id="events-color" />
+          <input type="submit" value="Add events" />
+        </form>
+      </div>
+      <div class="row">
+        <div class="six columns">
+          <h2 id="section:sql">SQL Queries</h2>
+          <p>Add custom SQL queries on the data:</p>
+          <input id="name" />
+          <label for="name">Name of table</label>
+          <input id="query" />
+          <label for="query">SQL query</label>
+          <button id="search">Search</button>
+        </div>
+        <div class="six columns">
+          <p>Live preview of output (only up to 5 rows shown):</p>
+          <div id="sql-preview"></div>
+        </div>
+      </div>
+      <div id="sql">
+      </div>
+      <script src="util.js"></script>
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.15.0/d3.min.js"></script>
+      <script src="/index.js"></script>
+      </body>
+  </html>
